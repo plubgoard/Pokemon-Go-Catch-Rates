@@ -1,12 +1,5 @@
 # Pokemon-Go-Catch-Rates
 
----
-title: "Pokémon Catch Rate Calculator"
-author: "Mark Litak"
-date: "5/15/2022"
-output: pdf_document
----
-
 # INTRODUCTION
 
 ## What
@@ -23,20 +16,20 @@ This topic was chosen because I am a Pokémon Go player, and when we were talkin
 
 On the Pokémon wiki, a formula for the Probability of Catching a Pokémon is provided, as well as several data tables for use with the formula,
 
-$$ P = 1 - (1 - \frac{BCR}{2 \times CPM})^{Ball \times Berry \times Throw \times Curveball \times Medal \times Encounter}$$
+![equation](https://latex.codecogs.com/svg.image?P%20=%201%20-%20(1%20-%20%5Cfrac%7BBCR%7D%7B2%20%5Ctimes%20CPM%7D)%5E%7BBall%20%5Ctimes%20Berry%20%5Ctimes%20Throw%20%5Ctimes%20Curveball%20%5Ctimes%20Medal%20%5Ctimes%20Encounter%7D)
 
 where BCR is the **Base Catch Rate**, provided in a table, **CPM** is the CP multiplier, **Ball** is the type of ball used to attempt to catch the Pokémon, **Throw** corresponds to a specific throw's accuracy, **Curveball** is whether a player threw a curveball or not, **Medal** is whether the player has a medal in that specific Pokémon's type, and **Encounter**, corresponding to whether the player encountered the Pokémon in the Wild or through some other means, such as a Raid.
 
 Within this project, several assumptions were made. 
 
-* The Pokémon was assumed to have been encountered in the Wild, as the Wild contains Pokémon with the highest possible levels; this corresponds to an exponent multiplier of $1$. 
-* The Pokémon was assumed to be the highest level possible with such an encounter (level 35, corresponding to a CP multiplier of $0.7615638$). 
-* The player was assumed to successfully throw a curveball, which is not particularly difficult with practice; this corresponds to a multiplier of $1.7$. 
-* The player is assumed to not have a medal in the type, corresponding to a multiplier of $1$.
+* The Pokémon was assumed to have been encountered in the Wild, as the Wild contains Pokémon with the highest possible levels; this corresponds to an exponent multiplier of 1. 
+* The Pokémon was assumed to be the highest level possible with such an encounter (level 35, corresponding to a CP multiplier of 0.7615638). 
+* The player was assumed to successfully throw a curveball, which is not particularly difficult with practice; this corresponds to a multiplier of 1.7. 
+* The player is assumed to not have a medal in the type, corresponding to a multiplier of 1.
 
 With the above assumptions, the formula used became
 
-$$ P = 1 - (1 - \frac{BCR}{2 \times 1.52312768})^{1.7 \times Ball \times Berry \times Throw}$$
+![equation](https://latex.codecogs.com/svg.image?P%20=%201%20-%20(1%20-%20%5Cfrac%7BBCR%7D%7B2%20%5Ctimes%201.52312768%7D)%5E%7B1.7%20%5Ctimes%20Ball%20%5Ctimes%20Berry%20%5Ctimes%20Throw%7D)
 
 ### Ball, Berry, and Throw Modifiers
 
@@ -72,7 +65,7 @@ The first challenge in creating this calculator was acquiring the data for Base 
 
 Upon considering the Catch Rate formula, I realized that several variables were present. Some of these variables I discarded outright for simplicity, such as Encounter type and whether or not the player had a Medal; I assumed that the most difficult option would be the case. As learning how to throw curveballs may take only a few attempts, as this is simple enough, I felt that I could safely assume that the player would be throwing a curveball. 
 
-However, this still left me with five variables. I knew that the most popular calculator made a table, of the type of ball to be used and the accuracy of a throw, with checkboxes for berries, and a slider for the Pokémon's level. I knew that I wanted to keep a rudimentary User Interface, with an option for the chosen Pokémon. I considered whether I wanted to keep the CPM a variable, or if I wanted to keep it at a constant level, and whether I wanted to keep the Berry a constant variable as well, or if I wanted to assume that the player was using no berry (or a Razz berry, which provides a modifier of $1.5$, the lowest of the available berries).
+However, this still left me with five variables. I knew that the most popular calculator made a table, of the type of ball to be used and the accuracy of a throw, with checkboxes for berries, and a slider for the Pokémon's level. I knew that I wanted to keep a rudimentary User Interface, with an option for the chosen Pokémon. I considered whether I wanted to keep the CPM a variable, or if I wanted to keep it at a constant level, and whether I wanted to keep the Berry a constant variable as well, or if I wanted to assume that the player was using no berry (or a Razz berry, which provides a modifier of 1.5, the lowest of the available berries).
 
 After a short period of consideration, I decided to keep the Berry choice, as this would add only a comparatively low amount of complexity. I debated whether I should leave this as an option for the user to choose initially, along with the Pokémon's number, or if I wanted to create a tensor, or 3D table, with the data immediately visible slice by slice. Ultimately, I decided that choosing a berry to use initially would be the simplest approach to take; however, taking a more complex approach may be possible with more work to be done.
 
@@ -155,11 +148,11 @@ After this data is read, we are ready to move on to **creating a function**.
 
 ### Creating Functions
 
-Three functions needed to be created: the probability of catching a Pokémon on a given throw ($P(Catch)$), the number of throws before the Pokémon will have an 80% chance of being caught ($Throws$), and the number of throws before the Pokémon will have a 50% chance of running away ($FleeRate$).
+Three functions needed to be created: the probability of catching a Pokémon on a given throw (`P(Catch)`), the number of throws before the Pokémon will have an 80% chance of being caught (`Throws`), and the number of throws before the Pokémon will have a 50% chance of running away (`FleeRate`).
 
 The first, and most crucial, is the probability of catching a Pokémon. Recall that the formula for the Probability of Catching is
 
-$$ P = 1 - (1 - \frac{BCR}{2 \times 1.52312768})^{1.7 \times Ball \times Berry \times Throw}$$
+![equation](https://latex.codecogs.com/svg.image?P%20=%201%20-%20(1%20-%20%5Cfrac%7BBCR%7D%7B2%20%5Ctimes%201.52312768%7D)%5E%7B1.7%20%5Ctimes%20Ball%20%5Ctimes%20Berry%20%5Ctimes%20Throw%7D)
 
 Creating a function in R is similar to creating a function in Python. A function has the following information:
 
@@ -170,7 +163,7 @@ variable <- function(inputs) {
 }
 ```
 
-The calculation for $P(Catch)$ can be written in R as p <- 1-(1-(BCR/1.52312768))^(1.7*ball*berry*throw); therefore, its function will be
+The calculation for `P(Catch)` can be written in R as `p <- 1-(1-(BCR/1.52312768))^(1.7*ball*berry*throw)`; therefore, its function will be
 
 ```{r}
 probCatch <- function(BCR,ball,berry,throw) {
@@ -181,7 +174,7 @@ probCatch <- function(BCR,ball,berry,throw) {
 
 Determining the number of throws before a Pokémon will be 80% likely to have been caught requires the utilization of the **geometric distribution**. The geometric distribution is a distribution that represents exactly this: the number of failures before a likely success, to a given percentile. In R, this can be calculated using the function `qgeom(percentile,probability)`, where `percentile` is the percent certainty to which we want to calculate, and `probability` is the probability of success on a given trial.
 
-Therefore, the formula for $Throws$,
+Therefore, the formula for `Throws`,
 
 ```{r}
 throwsCatch <- function(pcatch) {
@@ -189,7 +182,7 @@ throwsCatch <- function(pcatch) {
 }
 ```
 
-and for $FleeRate$,
+and for `FleeRate`,
 
 ```{r}
 throwsFlee <- function(p) {
@@ -205,7 +198,7 @@ Using the R command `cbind`, a table can be created from a list of columns. `cbi
 
 As stated above, a Pokéball gives a modifier of 1, a Greatball gives a modifier of 1.5, and an Ultraball gives a modifier of 2. A normal throw gives no modifier, a Nice throw gives a modifier between 1 and 1.3 (averaged to 1.15 for simplicity of the program), a Great throw gives a modifier between 1.3 and 1.7 (averaged to 1.5 for simplicity), and an Excellent throw gives a modifier between 1.7 and 2.0 (averaged to 1.85 for simplicity). 
 
-Therefore, each vector had to vary along the Throw type, while keeping the Ball type the same. We create these vectors, filling each row with a calculated $P(Catch)$ using the `probCatch` function we created earlier.
+Therefore, each vector had to vary along the Throw type, while keeping the Ball type the same. We create these vectors, filling each row with a calculated `P(Catch)` using the `probCatch` function we created earlier.
 
 ```{r}
 # Pball's Ball modifier is 1, and the column varies by throw
@@ -228,7 +221,7 @@ Uball <- c(probCatch(BCR,2,berry,1),
 
 ```
 
-Similarly, the function evaluating $Throws$ varied according to Throw type and ball, using the `throwsCatch` function we had created earlier, using $P(Catch)$ as the input:
+Similarly, the function evaluating `Throws` varied according to Throw type and ball, using the `throwsCatch` function we had created earlier, using `P(Catch)` as the input:
 
 ```{r}
 # Pball's Ball modifier is 1, and the column varies by throw
