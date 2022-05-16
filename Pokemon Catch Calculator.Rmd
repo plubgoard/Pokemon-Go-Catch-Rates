@@ -320,7 +320,7 @@ Creating files in RMarkdown was not significantly difficult to me. Through my pr
 
 ## Github
 
-On the other hand, Github is not something that I am very familiar with. I learned a lot in trying to create a Repository for this project, which I had only done once previously. I learned how to create a README file, and how to commit changes to Github. To be completely honest, I initially simply uploaded files to the Github website instead of pushing to Git itself.
+On the other hand, Github is not something that I am very familiar with. I learned a lot in trying to create a Repository for this project, which I had only done once previously. I learned how to create a README file, and how to commit changes to Github. I also learned how to display LaTeX equations in Github and .md files, to display the necessary equations for understanding my project in the Github README.md file. (Also, to be completely honest, I initially simply uploaded files to the Github website instead of pushing to Git itself.)
 
 ## Geometric Distribution
 
